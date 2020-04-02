@@ -1,0 +1,24 @@
+version: "3"
+services:
+  localgit:
+    image: alpine/git
+  jenkins:
+    image: jenkins/jenkins
+    expose:
+      - "8080"
+      - "50000"
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+  builditapp:
+    image: buildit-v1
+    expose:
+      - "3000"
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.lb.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - builditapp
+    ports:
+      - "80:80"
